@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Calificaciones para Docentes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Vista de Bienvenida -->
+    <div id="welcomeView" class="view welcome-view">
+        <div class="welcome-container">
+            <div class="welcome-card">
+                <div class="welcome-header">
+                    <h1>Sistema de Calificaciones para Docentes</h1>
+                    <p class="welcome-subtitle">Gestiona las calificaciones de tus alumnos de manera profesional</p>
+                </div>
+                <div class="welcome-actions">
+                    <button id="loginBtn" class="btn btn--primary btn--lg btn--full-width">Iniciar Sesión</button>
+                    <button id="registerBtn" class="btn btn--outline btn--lg btn--full-width">Registrar Nuevo Docente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista de Registro -->
+    <div id="registerView" class="view register-view hidden">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Registro de Docente</h2>
+                    <p>Crea tu cuenta para comenzar a usar el sistema</p>
+                </div>
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="registerName" class="form-label">Nombre Completo</label>
+                        <input type="text" id="registerName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerUsername" class="form-label">Nombre de Usuario</label>
+                        <input type="text" id="registerUsername" class="form-control" required minlength="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerSubject" class="form-label">Materia que Imparte (Opcional)</label>
+                        <input type="text" id="registerSubject" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword" class="form-label">Contraseña</label>
+                        <input type="password" id="registerPassword" class="form-control" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirmPassword" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" id="registerConfirmPassword" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Registrar Docente</button>
+                </form>
+                <div class="auth-footer">
+                    <p>¿Ya tienes cuenta? <a href="#" id="goToLogin">Inicia sesión</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista de Login -->
+    <div id="loginView" class="view login-view hidden">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Iniciar Sesión</h2>
+                    <p>Accede a tu cuenta de docente</p>
+                </div>
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginUsername" class="form-label">Nombre de Usuario</label>
+                        <input type="text" id="loginUsername" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword" class="form-label">Contraseña</label>
+                        <input type="password" id="loginPassword" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Iniciar Sesión</button>
+                </form>
+                <div class="auth-footer">
+                    <p>¿No tienes cuenta? <a href="#" id="goToRegister">Regístrate</a></p>
+                </div>
+                <div class="demo-info">
+                    <h4>Cuenta de Demostración:</h4>
+                    <p>Usuario: <strong>profesor1</strong></p>
+                    <p>Contraseña: <strong>123456</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aplicación Principal -->
+    <div id="appView" class="view app-view hidden">
+        <!-- Header de la aplicación -->
+        <header class="app-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="header-info">
+                        <h1>Sistema de Calificaciones</h1>
+                        <p id="teacherWelcome">Bienvenido, Docente</p>
+                    </div>
+                    <div class="header-actions">
+                        <span id="currentDateTime"></span>
+                        <button id="generatePdfBtn" class="btn btn--primary">Generar Reporte PDF</button>
+                        <button id="logoutBtn" class="btn btn--outline">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <main class="main-content">
+                <!-- Sección de agregar alumno -->
+                <section class="add-student-section">
+                    <div class="card">
+                        <div class="card__body">
+                            <h2>Agregar Nuevo Alumno</h2>
+                            <div class="form-group">
+                                <label for="studentName" class="form-label">Nombre del Alumno</label>
+                                <input type="text" id="studentName" class="form-control" placeholder="Ingresa el nombre completo">
+                            </div>
+                            <button id="addStudentBtn" class="btn btn--primary">Agregar Alumno</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección de agregar materia -->
+                <section class="add-subject-section">
+                    <div class="card">
+                        <div class="card__body">
+                            <h2>Agregar Materia</h2>
+                            <div class="form-group">
+                                <label for="studentSelect" class="form-label">Seleccionar Alumno</label>
+                                <select id="studentSelect" class="form-control">
+                                    <option value="">-- Selecciona un alumno --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="subjectName" class="form-label">Nombre de la Materia</label>
+                                <input type="text" id="subjectName" class="form-control" placeholder="Ej. Matemáticas, Español, Historia">
+                            </div>
+                            <button id="addSubjectBtn" class="btn btn--primary">Agregar Materia</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección de calificaciones -->
+                <section class="grades-section">
+                    <div class="card">
+                        <div class="card__body">
+                            <h2>Registrar Calificaciones</h2>
+                            <div class="grade-selectors">
+                                <div class="form-group">
+                                    <label for="gradeStudentSelect" class="form-label">Seleccionar Alumno</label>
+                                    <select id="gradeStudentSelect" class="form-control">
+                                        <option value="">-- Selecciona un alumno --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gradeSubjectSelect" class="form-label">Seleccionar Materia</label>
+                                    <select id="gradeSubjectSelect" class="form-control" disabled>
+                                        <option value="">-- Primero selecciona un alumno --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="gradeForm" class="grade-form hidden">
+                                <div class="grades-grid">
+                                    <div class="form-group">
+                                        <label for="parcial1" class="form-label">Parcial 1</label>
+                                        <input type="number" id="parcial1" class="form-control grade-input" 
+                                               min="0" max="10" step="0.1" placeholder="0.0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="parcial2" class="form-label">Parcial 2</label>
+                                        <input type="number" id="parcial2" class="form-control grade-input" 
+                                               min="0" max="10" step="0.1" placeholder="0.0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="parcial3" class="form-label">Parcial 3</label>
+                                        <input type="number" id="parcial3" class="form-control grade-input" 
+                                               min="0" max="10" step="0.1" placeholder="0.0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="promedio" class="form-label">Promedio</label>
+                                        <input type="text" id="promedio" class="form-control" readonly 
+                                               placeholder="Se calcula automáticamente">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="suma" class="form-label">Suma Total</label>
+                                        <input type="text" id="suma" class="form-control" readonly 
+                                               placeholder="Suma de parciales">
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button id="saveGradesBtn" class="btn btn--primary">Guardar Calificaciones</button>
+                                    <button id="clearFormBtn" class="btn btn--secondary">Limpiar Formulario</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Resumen de estadísticas -->
+                <section class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-card success">
+                            <div class="stat-number" id="regularCount">0</div>
+                            <div class="stat-label">Alumnos Regulares</div>
+                        </div>
+                        <div class="stat-card error">
+                            <div class="stat-number" id="extraordinaryCount">0</div>
+                            <div class="stat-label">Alumnos en Extraordinario</div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-number" id="approvedSubjects">0</div>
+                            <div class="stat-label">Materias Aprobadas</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-number" id="failedSubjects">0</div>
+                            <div class="stat-label">Materias Reprobadas</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Lista de alumnos y materias -->
+                <section class="students-list-section">
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="flex justify-between items-center">
+                                <h2>Lista de Alumnos y Materias</h2>
+                                <div class="header-actions">
+                                    <button id="expandAllBtn" class="btn btn--outline btn--sm">Expandir Todo</button>
+                                    <button id="collapseAllBtn" class="btn btn--outline btn--sm">Contraer Todo</button>
+                                    <button id="clearAllBtn" class="btn btn--outline btn--sm">Limpiar Todo</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__body">
+                            <div id="studentsContainer">
+                                <div id="emptyState" class="empty-state">
+                                    <p>No hay alumnos registrados</p>
+                                    <p class="empty-subtitle">Comienza agregando un alumno para gestionar sus calificaciones</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Lista de alumnos en extraordinario -->
+                <section id="extraordinaryList" class="extraordinary-section hidden">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2>⚠️ Alumnos en Extraordinario</h2>
+                        </div>
+                        <div class="card__body">
+                            <div id="extraordinaryStudents"></div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="confirmModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Confirmar acción</h3>
+            <p id="confirmMessage">¿Estás seguro de que deseas realizar esta acción?</p>
+            <div class="modal-actions">
+                <button id="confirmYes" class="btn btn--primary">Sí</button>
+                <button id="confirmNo" class="btn btn--secondary">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de notificación -->
+    <div id="notificationModal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="notificationTitle">Notificación</h3>
+            <p id="notificationMessage">Mensaje</p>
+            <div class="modal-actions">
+                <button id="notificationOk" class="btn btn--primary">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
